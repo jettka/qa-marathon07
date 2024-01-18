@@ -1,0 +1,137 @@
+<!-- customer-detail.html -->
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧客詳細</title>
+    <!-- Bootstrap CSSの読み込み -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">顧客詳細</h2>
+        <form id="updateForm">
+            <div class="form-group">
+                <label for="companyName">会社名</label>
+                <input type="text" class="form-control" id="companyName" required>
+            </div>
+            <div class="form-group">
+                <label for="industry">業種</label>
+                <input type="text" class="form-control" id="industry" required>
+            </div>
+            <div class="form-group">
+                <label for="contact">連絡先</label>
+                <input type="text" class="form-control" id="contact" required>
+            </div>
+            <div class="form-group">
+                <label for="location">所在地</label>
+                <input type="text" class="form-control" id="location" required>
+            </div>
+            <div class="btn-group">
+                <button type="button" id="updateButton" class="btn btn-primary">更新</button>
+                <button id="deleteButton" class="btn btn-danger">削除</button>
+            </div>
+        </form>
+        <button id="goBackButton" class="btn btn-primary mt-3">顧客リストへ戻る</button>
+    </div>
+
+    <!-- BootstrapのJavaScriptの読み込み -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script type="module">
+        import config from '../config.js';
+
+        document.addEventListener('DOMContentLoaded', fetchCustomerDetails);
+
+        async function fetchCustomerDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const customerId = urlParams.get('id');
+
+            try {
+                const response = await fetch(`${config.apiUrl}/customer/${customerId}`);
+                const customerDetails = await response.json();
+
+                document.getElementById('companyName').value = customerDetails.company_name;
+                document.getElementById('industry').value = customerDetails.industry;
+                document.getElementById('contact').value = customerDetails.contact;
+                document.getElementById('location').value = customerDetails.location;
+
+                document.getElementById('deleteButton').addEventListener('click', () => {
+                    deleteCustomer(customerId);
+                });
+
+                document.getElementById('goBackButton').addEventListener('click', goBack);
+
+                // 更新ボタンにイベントリスナーを追加
+                document.getElementById('updateButton').addEventListener('click', updateCustomer);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function updateCustomer() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const customerId = urlParams.get('id');
+
+            const companyName = document.getElementById('companyName').value;
+            const industry = document.getElementById('industry').value;
+            const contact = document.getElementById('contact').value;
+            const location = document.getElementById('location').value;
+
+            try {
+                const response = await fetch(`${config.apiUrl}/customer/${customerId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ companyName, industry, contact, location })
+                });
+
+                if (response.ok) {
+                    alert('顧客情報が更新されました！');
+                } else {
+                    alert('顧客情報の更新に失敗しました。');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function deleteCustomer(customerId) {
+            const confirmed = confirm('削除してもよろしいですか？');
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${config.apiUrl}/customer/${customerId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('顧客が削除されました。');
+                    window.location.href = 'list.html';
+                } else {
+                    alert('顧客の削除に失敗しました。');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+
+</html>

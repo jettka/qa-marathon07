@@ -43,12 +43,9 @@ app.get("/customers", async (req, res) => {
 });
 
 
-
 app.post("/add-customer", async (req, res) => {
-  //app.post("/customer", async (req, res) => {//変更場所
   try {
      console.log("POST /add-customer", req.body);
-    //console.log("POST /customer", req.body);//変更箇所
     const { companyName, industry, contact, location } = req.body;
     const newCustomer = await pool.query(
       "INSERT INTO customers (company_name, industry, contact, location) VALUES ($1, $2, $3, $4) RETURNING *",
@@ -60,5 +57,63 @@ app.post("/add-customer", async (req, res) => {
     res.json({ success: false });
   }
 });
+
+app.get("/customer/:id", async (req, res) => {
+  try {
+    const customerId = req.params.id;
+    const customerData = await pool.query("SELECT * FROM customers WHERE customer_id = $1", [customerId]);
+
+    if (customerData.rows.length === 0) {
+      // データが見つからない場合の処理
+      res.status(404).send("Customer not found");
+    } else {
+      res.json(customerData.rows[0]);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.put("/customer/:id", async (req, res) => {
+  try {
+    const customerId = req.params.id;
+    const { companyName, industry, contact, location } = req.body;
+
+    const updateResult = await pool.query(
+      "UPDATE customers SET company_name = $1, industry = $2, contact = $3, location = $4 WHERE customer_id = $5 RETURNING *",
+      [companyName, industry, contact, location, customerId]
+    );
+
+    if (updateResult.rows.length === 0) {
+      // データが見つからない場合の処理
+      res.status(404).send("Customer not found");
+    } else {
+      res.json({ success: true, updatedCustomer: updateResult.rows[0] });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+app.delete("/customer/:id", async (req, res) => {
+  try {
+    const customerId = req.params.id;
+    const deleteResult = await pool.query("DELETE FROM customers WHERE customer_id = $1 RETURNING *", [customerId]);
+
+    if (deleteResult.rows.length === 0) {
+      // データが見つからない場合の処理
+      res.status(404).send("Customer not found");
+    } else {
+      res.json({ success: true, deletedCustomer: deleteResult.rows[0] });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 
 app.use(express.static("public"));
