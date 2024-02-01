@@ -22,5 +22,4 @@ jobs:
           script: bash /app/deploy_test.sh aoi_kobayashi
 
       - name: Deploy using rsync
-        run: rsync -r --delete-after ./env/qa-marathon07/ ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:/usr/share/nginx/html/aoi_kobayashi
-          
+         run: rsync -r --delete-after /c/env/qa-marathon07/ ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:/usr/share/nginx/html/aoi_kobayashi
