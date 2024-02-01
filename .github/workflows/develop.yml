@@ -12,10 +12,7 @@ jobs:
     steps:
       - id: ssh
         uses: invi5H/ssh-action@v1
-        run: rsync -r --delete-after ./env/qa-marathon07/ ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:/usr/share/nginx/html/aoi_kobayashi
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          
+        
         with:
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
           SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
@@ -23,3 +20,7 @@ jobs:
           SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
           SSH_PRIVATE-KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           script: bash /app/deploy_test.sh aoi_kobayashi
+
+      - name: Deploy using rsync
+        run: rsync -r --delete-after ./env/qa-marathon07/ ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:/usr/share/nginx/html/aoi_kobayashi
+          
