@@ -24,3 +24,9 @@ jobs:
       - name: Deploy using rsync
         run: rsync -r --delete-after ./env/qa-marathon07/ ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:/usr/share/nginx/html/aoi_kobayashi
           
+      - name: Set up SSH
+        run: |
+        mkdir -p ~/.ssh/
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/d_ed25519
+        ssh-keyscan -H ${{ secrets.DEV_SSH_HOST }} >> ~/.ssh/known_hosts
