@@ -12,7 +12,10 @@ jobs:
     steps:
       - id: ssh
         uses: invi5H/ssh-action@v1
-
+        run: rsync -r --delete-after ./env/qa-marathon07/ ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:/usr/share/nginx/html/aoi_kobayashi
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          
         with:
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
           SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
