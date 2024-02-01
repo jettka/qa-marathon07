@@ -20,4 +20,4 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             bash /app/deploy_test.sh aoi_kobayashi
-            rsync -r --delete-after /c/env/qa-marathon07/ ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:/usr/share/nginx/html/aoi_kobayashi
+            rsync -r -v --delete-after /c/env/qa-marathon07/ ${{ secrets.DEV_SSH_USER }}@${{ secrets.DEV_SSH_HOST }}:/usr/share/nginx/html/aoi_kobayashi
