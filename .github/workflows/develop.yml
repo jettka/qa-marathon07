@@ -19,5 +19,6 @@ jobs:
           host: ${{ secrets.DEV_SSH_HOST }}
           port: ${{ secrets.DEV_SSH_PORT }}
           username: ${{ secrets.DEV_SSH_USER }}
-          key: ${{ secrets.DEV_SSH_KEY }}
+          public-key: ${{ secrets.DEV_SSH_KEY }}
+          private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: bash /app/deploy_test.sh aoi_kobayashi
