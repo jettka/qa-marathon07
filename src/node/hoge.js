@@ -6,6 +6,7 @@ app.get('/', (req, res) => {
   res.send('marathon!');
 });
 
+
 app.listen(port, () => {
   console.log(`Express app listening at http://localhost:${port}`);
 });
