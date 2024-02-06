@@ -26,7 +26,6 @@ const pool = new Pool({
   port: 5432,
 });
 
-
 const port = 3507;
 
 app.listen(port, () => {
