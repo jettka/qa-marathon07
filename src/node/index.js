@@ -26,7 +26,7 @@ const pool = new Pool({
   port: 5432,
 });
 
-const port = 3000;
+const port = 3507;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
