@@ -7,7 +7,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: ssh actions
       - id: ssh
         uses: invi5H/ssh-action@v1
         with:
