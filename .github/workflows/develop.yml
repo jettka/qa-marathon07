@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - id: ssh
       - name: ssh actions
         uses: invi5H/ssh-action@v1
         with:
