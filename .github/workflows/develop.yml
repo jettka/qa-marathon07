@@ -1,14 +1,11 @@
 name: ssh command
-
 on:
   push:
     branches:
       - develop
-
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     steps:
       - name: ssh actions
       - id: ssh
@@ -18,5 +15,4 @@ jobs:
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
           SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
           SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY }}
-
       - run: ssh ${{ steps.ssh.outputs.SERVER }} bash /app/deploy_test.sh aoi_kobayashi
