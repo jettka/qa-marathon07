@@ -17,6 +17,7 @@ describe('顧客情報入力フォームのテスト', () => {
         cy.get('#contact').type(uniqueContactNumber);
         cy.get('#location').type(data.location);
 
+        
       });
 
    // フォームの送信
