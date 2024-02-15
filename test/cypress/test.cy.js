@@ -27,10 +27,10 @@ describe('顧客情報入力フォームのテスト', () => {
 
 
 // フォームがリセットされたことを確認
-cy.get('#companyName').clear().should('have.value', '');
-cy.get('#industry').clear().should('have.value', '');
-cy.get('#contact').clear().should('have.value', '');
-cy.get('#location').clear().should('have.value', '');
+cy.get('#companyName').should('have.value', '');
+cy.get('#industry').should('have.value', '');
+cy.get('#contact').should('have.value', '');
+cy.get('#location').should('have.value', '');
 
      cy.wait(5000);
   });
