@@ -55,23 +55,30 @@
             const customerId = urlParams.get('id');
 
             try {
-                const response = await fetch(`${config.apiUrl}/customer/${customerId}`);
-                const customerDetails = await response.json();
+                if (customerId) {
+                    const response = await fetch(`${config.apiUrl}/customer/${customerId}`);
+                    const customerDetails = await response.json();
 
-                document.getElementById('companyName').value = customerDetails.company_name;
-                document.getElementById('industry').value = customerDetails.industry;
-                document.getElementById('contact').value = customerDetails.contact;
-                document.getElementById('location').value = customerDetails.location;
+                    document.getElementById('companyName').value = customerDetails.company_name;
+                    document.getElementById('industry').value = customerDetails.industry;
+                    document.getElementById('contact').value = customerDetails.contact;
+                    document.getElementById('location').value = customerDetails.location;
 
-                document.getElementById('deleteButton').addEventListener('click', () => {
-                    deleteCustomer(customerId);
-                });
+                    document.getElementById('deleteButton').addEventListener('click', () => {
+                        deleteCustomer(customerId);
+                    });
 
-                document.getElementById('goBackButton').addEventListener('click', goBack);
+                    document.getElementById('goBackButton').addEventListener('click', () => {
+                        // 顧客情報へ戻るボタンが押されたら list.html に遷移
+                        window.location.href = 'list.html';
+                    });
 
-                // 更新ボタンにイベントリスナーを追加
-                document.getElementById('updateButton').addEventListener('click', updateCustomer);
-
+                    // 更新ボタンにイベントリスナーを追加
+                    document.getElementById('updateButton').addEventListener('click', updateCustomer);
+                } else {
+                    // customerIdがnullの場合、list.htmlに遷移
+                    window.location.href = 'list.html';
+                }
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -106,30 +113,28 @@
         }
 
         async function deleteCustomer(customerId) {
-            const confirmed = confirm('削除してもよろしいですか？');
-            if (!confirmed) {
-                return;
-            }
+            if (customerId) {
+                const confirmed = confirm('削除してもよろしいですか？');
+                if (confirmed) {
+                    try {
+                        const response = await fetch(`${config.apiUrl}/customer/${customerId}`, {
+                            method: 'DELETE'
+                        });
 
-            try {
-                const response = await fetch(`${config.apiUrl}/customer/${customerId}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    alert('顧客が削除されました。');
-                    window.location.href = 'list.html';
-                } else {
-                    alert('顧客の削除に失敗しました。');
+                        if (response.ok) {
+                            alert('顧客が削除されました.');
+                            window.location.href = './list.html';
+                        } else {
+                            alert('顧客の削除に失敗しました。');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
                 }
-
-            } catch (error) {
-                console.error('Error:', error);
+            } else {
+                // customerIdがnullの場合のエラー処理
+                console.error('Error: customerId is null.');
             }
-        }
-
-        function goBack() {
-            window.history.back();
         }
     </script>
 </body>
