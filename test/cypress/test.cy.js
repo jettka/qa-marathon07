@@ -33,7 +33,6 @@ cy.get('#location').should('have.value', '');
   });
 
 
-
   it('確認画面からリストへ追加する', () => {
     cy.visit('/aoi_kobayashi/customer/add-confirm.html'); // テスト対象のページにアクセス
 
