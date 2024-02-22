@@ -3,20 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>案件情報入力</title>
+    <title>確認画面</title>
     <!-- Bootstrap CSSの読み込み -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container mt-5">
-        <!-- ここにHTMLを書く -->
+    <form id="customer-form">
+        <h2 class="mb-4">入力内容の確認</h2>
+
+        <!-- 確認内容を表示する部分 -->
+        <div id="confirmation-details"></div>
+
+        <!-- 戻るボタン -->
+        <a href="add.html" class="btn btn-secondary mt-3" id="back-btn">戻る</a>
+
+
+        <!-- 顧客情報を追加するボタン -->
+        <button class="btn btn-primary mt-3" id="add-customer-btn">顧客情報を追加</button>
+    </form>
     </div>
-    <script type="module">
-        <!-- ここにJSを書く -->
-    </script>
+
     <!-- BootstrapのJavaScriptの読み込み -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script type="module">
+        // URLからクエリパラメータを取得する関数
+        function getQueryParams() {
+            const searchParams = new URLSearchParams(window.location.search);
+            const params = {};
+            for (const [key, value] of searchParams) {
+                params[key] = value;
+            }
+            return params;
+        }
+
+        // 入力内容を取得し、表示する関数
+        function displayConfirmationDetails() {
+            const queryParams = getQueryParams();
+
+            // 入力内容を取得
+            const companyName = queryParams.companyName || '';
+            const industry = queryParams.industry || '';
+            const contact = queryParams.contact || '';
+            const location = queryParams.location || '';
+
+            // 表示用のHTMLを生成
+            const detailsHTML = `
+                <p id="companyName"><strong>会社名:</strong> ${companyName}</p>
+                <p id="industry"><strong>業種:</strong> ${industry}</p>
+                <p id="contact"><strong>連絡先:</strong> ${contact}</p>
+                <p id="location"><strong>所在地:</strong> ${location}</p>
+            `;
+
+            // HTMLを挿入
+            document.getElementById('confirmation-details').innerHTML = detailsHTML;
+        }
+
+        // ページ読み込み時に入力内容を表示
+        document.addEventListener('DOMContentLoaded', displayConfirmationDetails);
+
+        // 顧客情報を追加するボタンがクリックされた時の処理
+        document.getElementById('add-customer-btn').addEventListener('click', function() {
+            const queryParams = getQueryParams();
+
+            // 入力内容を取得
+            const companyName = queryParams.companyName || '';
+            const industry = queryParams.industry || '';
+            const contact = queryParams.contact || '';
+            const location = queryParams.location || '';
+
+            // 顧客情報をサーバーに送信
+            fetch('http://localhost:3507/add-customer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `companyName=${companyName}&industry=${industry}&contact=${contact}&location=${location}`
+            }).then(response => response.json())
+              .then(data => {
+                if(data.success) {
+                    alert('顧客情報が正常に保存されました。');
+                } else {
+                    alert('保存に失敗しました。');
+                }
+              })
+              .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>

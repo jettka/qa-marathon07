@@ -14,7 +14,7 @@ services:
     container_name: "nodejs"
     image: node:20-bullseye
     ports:
-      - "3000:3000"
+      - "3507:3507"
     volumes:
       - "./src/node:/app"
       - "./work:/work"
@@ -27,6 +27,8 @@ services:
     shm_size: 256mb
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
+    ports:
+      - "5432:5432"
     volumes:
       - "./db:/var/lib/postgresql/data"
       - "./work:/work"
