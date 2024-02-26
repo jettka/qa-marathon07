@@ -20,7 +20,7 @@ const pool = new Pool({
   //user: "postgres", // PostgreSQLのユーザー名に置き換えてください
   user: "user_aoi_kobayashi",
   //host: "postgres",
-  host: "localohost",
+  host: "localhost",
   //database: "crm_3507", // PostgreSQLのデータベース名に置き換えてください
   database: "db_aoi_kobayashi",
   //password: "pass_3507", // PostgreSQLのパスワードに置き換えてください
