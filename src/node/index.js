@@ -16,13 +16,14 @@ app.use(express.json());
 
 const { Pool } = require("pg");
 const pool = new Pool({
-  user: "user_3507", // PostgreSQLのユーザー名に置き換えてください
+  //user: "user_3507", // PostgreSQLのユーザー名に置き換えてください
   //user: "postgres", // PostgreSQLのユーザー名に置き換えてください
+  user: "user_aoi_kobayashi",
   host: "postgres",
-  database: "crm_3507", // PostgreSQLのデータベース名に置き換えてください
-  //database: "qamarathon", // PostgreSQLのデータベース名に置き換えてください
-  password: "pass_3507", // PostgreSQLのパスワードに置き換えてください
-  //password: "postgres", // PostgreSQLのパスワードに置き換えてください
+  //database: "crm_3507", // PostgreSQLのデータベース名に置き換えてください
+  database: "db_aoi_kobayashi",
+  //password: "pass_3507", // PostgreSQLのパスワードに置き換えてください
+  password: "pass", // PostgreSQLのパスワードに置き換えてください
   port: 5432,
 });
 
